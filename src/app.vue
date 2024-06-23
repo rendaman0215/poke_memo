@@ -7,15 +7,17 @@
       <SearchBox />
       <PokeButton />
     </section>
+    {{ pokes }}
   </div>
 </template>
 
 <script setup lang="ts">
-const { setRanking } = useRanking();
+const { $pokenode } = useNuxtApp();
+const pokes = ref();
 
-onMounted(() => {
+onMounted(async () => {
   console.log("mounted");
-  setRanking();
+  pokes.value = await $pokenode.listPokemons();
 });
 </script>
 

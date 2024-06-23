@@ -1,9 +1,11 @@
-import type { PokeType } from "./PokeType";
+import type { PokeTypes } from "./PokeType";
 import type { WazaList } from "./Waza";
 import type { Tokusei } from "./Tokusei";
-import { getItemById, type Item } from "./Mochimono";
+import type { Item } from "./Mochimono";
 import type { TeraType } from "./TeraType";
 import type { Seikaku } from "./Seikaku";
+
+import { getPokeTypes } from "./PokeType";
 
 export const PokeList = [
   "フシギダネ",
@@ -1033,14 +1035,14 @@ export const PokeList = [
   "モモワロウ",
 ] as const;
 
-type PokeName = (typeof PokeList)[number];
+export type PokeName = (typeof PokeList)[number];
 
 // 元のインターフェース
 interface Pokemon {
   id: number;
   form: number;
   name: PokeName;
-  type: PokeType;
+  types: PokeTypes;
   base: {
     HP: number;
     Attack: number;
@@ -1054,13 +1056,35 @@ interface Pokemon {
 // Personインターフェースを拡張
 interface CustomizedPokemon extends Pokemon {
   // テラスタル
-  teraType: TeraType;
+  teraType: TeraType | undefined;
   // 技構成
-  waza: WazaList;
+  waza: WazaList | undefined;
   // 特性
-  tokusei: Tokusei;
+  tokusei: Tokusei | undefined;
   // 持ち物
-  item: Item;
+  item: Item | undefined;
   // 性格
-  seikaku: Seikaku;
+  seikaku: Seikaku | undefined;
 }
+
+const newPokemon = (id: number, form: number): Pokemon => {
+  const name = PokeList[id];
+  const types = getPokeTypes(id, form);
+  const base = {
+    HP: 45,
+    Attack: 49,
+    Defense: 49,
+    Spatk: 65,
+    Spdef: 65,
+    Speed: 45,
+  };
+
+  const pokemon: Pokemon = {
+    id,
+    form,
+    name,
+    types,
+    base,
+  };
+  return pokemon;
+};

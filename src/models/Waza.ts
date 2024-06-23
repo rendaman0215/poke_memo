@@ -925,5 +925,4 @@ export type Waza = {
   name: (typeof WazaDict)[keyof typeof WazaDict];
 };
 
-type FourElementList<T> = [T, T, T, T];
-export type WazaList = FourElementList<Waza>;
+export type WazaList = [Waza, Waza, Waza, Waza];
