@@ -4,6 +4,7 @@ import type { Tokusei } from "./Tokusei";
 import type { Item } from "./Mochimono";
 import type { TeraType } from "./TeraType";
 import type { Seikaku } from "./Seikaku";
+import type { Base } from "./Base";
 
 import { getPokeTypes } from "./PokeType";
 
@@ -1038,23 +1039,16 @@ export const PokeList = [
 export type PokeName = (typeof PokeList)[number];
 
 // 元のインターフェース
-interface Pokemon {
+export interface Pokemon {
   id: number;
   form: number;
   name: PokeName;
   types: PokeTypes;
-  base: {
-    HP: number;
-    Attack: number;
-    Defense: number;
-    Spatk: number;
-    Spdef: number;
-    Speed: number;
-  };
+  base: Base;
 }
 
 // Personインターフェースを拡張
-interface CustomizedPokemon extends Pokemon {
+export interface CustomizedPokemon extends Pokemon {
   // テラスタル
   teraType: TeraType | undefined;
   // 技構成
@@ -1067,15 +1061,15 @@ interface CustomizedPokemon extends Pokemon {
   seikaku: Seikaku | undefined;
 }
 
-const newPokemon = (id: number, form: number): Pokemon => {
-  const name = PokeList[id];
+export const NewPokemon = (id: number, form: number): Pokemon => {
+  const name = PokeList[id - 1];
   const types = getPokeTypes(id, form);
-  const base = {
+  const base: Base = {
     HP: 45,
     Attack: 49,
     Defense: 49,
-    Spatk: 65,
-    Spdef: 65,
+    SpAtk: 65,
+    SpDef: 65,
     Speed: 45,
   };
 

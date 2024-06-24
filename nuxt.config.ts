@@ -27,7 +27,6 @@ export default defineNuxtConfig({
       },
     },
   },
-  plugins: ["~/plugins/pokenode.ts"],
   css: [
     "/assets/styles/base.css",
     "@fortawesome/fontawesome-svg-core/styles.css",
