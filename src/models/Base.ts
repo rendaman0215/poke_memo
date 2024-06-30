@@ -9,24 +9,20 @@ export type Base = {
   Speed: number;
 };
 
+export const getPokeBases = (id: number, form: number): Base => {
+  const base = PokeBaseMap[id]?.[form];
+  if (!base) {
+    throw new Error(`Base not found for id: ${id}, form: ${form}`);
+  }
+  return base;
+};
+
 type PokeBaseMapType = {
   [key: number]: {
     [key: number]: Base;
   };
 };
 
-const baseMap: PokeBaseMapType = {
-  1: {
-    0: {
-      Attack: 49,
-      Defense: 49,
-      HP: 45,
-      SpAtk: 65,
-      SpDef: 65,
-      Speed: 45,
-    },
-  },
-};
 const PokeBaseMap: PokeBaseMapType = {
   "1": {
     "0": {

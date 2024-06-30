@@ -1,6 +1,7 @@
 import { pokeRank } from "~/data/data";
 
 import { getPokeTypes } from "./PokeType";
+import { getPokeBases } from "./Base";
 
 export const PokeList = [
   "フシギダネ",
@@ -1059,14 +1060,7 @@ export interface CustomizedPokemon extends Pokemon {
 export const NewPokemon = (id: number, form: number): Pokemon => {
   const name = PokeList[id - 1];
   const types = getPokeTypes(id, form);
-  const base: Base = {
-    HP: 45,
-    Attack: 49,
-    Defense: 49,
-    SpAtk: 65,
-    SpDef: 65,
-    Speed: 45,
-  };
+  const base = getPokeBases(id, form);
 
   const rank =
     pokeRank.findIndex((poke) => poke.id === id && poke.form === form) + 1

@@ -295,6 +295,7 @@ const lightenColor = (color: string, factor: number) => {
     justify-content: center;
     padding-top: 5px;
     &__waza {
+      border-radius: 16px;
       border: 1px solid #ccc;
       display: flex;
       justify-content: center;

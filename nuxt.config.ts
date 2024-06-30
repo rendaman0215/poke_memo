@@ -10,7 +10,21 @@ export default defineNuxtConfig({
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
+        {
+          name: "description",
+          content: "忘れやすいあなたのためのポケモン対戦のメモ帳",
+        },
+        {
+          property: "og:title",
+          content: "ポケメモ | 忘れやすいあなたのためのポケモン対戦のメモ帳",
+        },
+        {
+          property: "og:description",
+          content: "忘れやすいあなたのためのポケモン対戦のメモ帳",
+        },
+        { property: "og:image", content: "/ogp.png" },
       ],
+      link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
     },
   },
   devtools: { enabled: true },
@@ -37,12 +51,15 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
-  modules: ["@nuxtjs/google-fonts"],
+  modules: ["@nuxtjs/google-fonts", "nuxt-gtag"],
   googleFonts: {
     families: {
       "Noto Sans JP": [100, 400, 500, 700, 900],
       "M PLUS 1": [100, 200, 300, 400, 500, 600, 700, 800, 900],
     },
+  },
+  gtag: {
+    id: "G-MGG0ZKW5YB",
   },
   imports: {
     dirs: ["models/**", "composables/**", "utils/**"],

@@ -99,6 +99,7 @@ const selectSuggestion = (suggestion) => {
 }
 
 input {
+  background-color: transparent;
   border: none;
   border-bottom: 1px solid #ccc;
   outline: none;

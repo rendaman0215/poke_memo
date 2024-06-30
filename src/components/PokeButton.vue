@@ -51,7 +51,8 @@ const remove = (): void => {
 }
 
 .box {
-  font-size: 14px;
+  font-size: 13px;
+  color: #222;
   cursor: pointer;
   background-color: #eee;
   border-radius: 12px;
