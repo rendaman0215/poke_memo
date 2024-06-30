@@ -47,7 +47,7 @@
         }"
         @change="handleTeras"
       >
-        <option :value="noneTeras">テラスタル</option>
+        <option :value="noneTeras">----</option>
         <option
           v-for="(teraType, key) in TeraTypeDict"
           :key="key"
@@ -101,6 +101,9 @@
         a
       </div>
     </div>
+    <div class="card__trash" @click="removeFromParty">
+      <p>選出から外す</p>
+    </div>
   </div>
 </template>
 
@@ -112,22 +115,16 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits();
+const removeFromParty = (): void => {
+  emit("removeFromParty");
+};
+
 const iconTypeUrl = ref(
   "https://resource.pokemon-home.com/battledata/sprite/icons3/icons.png"
 );
 
-const pokemon = ref<CustomizedPokemon>({
-  id: props.pokemon.id,
-  form: props.pokemon.form,
-  name: props.pokemon.name,
-  types: props.pokemon.types,
-  base: props.pokemon.base,
-  teraType: undefined,
-  seikaku: undefined,
-  item: undefined,
-  tokusei: undefined,
-  waza: undefined,
-});
+const pokemon = ref<CustomizedPokemon>(props.pokemon);
 
 const shadowStyle = computed(() => {
   if (pokemon.value.teraType && pokemon.value.teraType.info) {
@@ -241,19 +238,19 @@ const lightenColor = (color: string, factor: number) => {
       left: 25%;
       width: 128px;
       height: 128px;
-      filter: drop-shadow(5px 10px 5px #999);
+      filter: drop-shadow(10px 10px 5px #999);
     }
     &__bases {
       position: absolute;
-      top: 20%;
-      left: -10%;
+      top: 10%;
+      left: 0%;
       width: 100px;
       list-style: none;
       color: #777;
       font-size: 12px;
       padding: 0;
       margin: 0;
-      text-align: center;
+      text-align: left;
     }
     &__tera {
       position: absolute;
@@ -294,6 +291,7 @@ const lightenColor = (color: string, factor: number) => {
     grid-gap: 5%;
     justify-content: center;
     padding-top: 5px;
+    padding-bottom: 0;
     &__waza {
       border-radius: 16px;
       border: 1px solid #ccc;
@@ -301,6 +299,15 @@ const lightenColor = (color: string, factor: number) => {
       justify-content: center;
       align-items: center;
     }
+  }
+
+  &__trash {
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    font-size: 12px;
+    border-top: 1px solid #ccc;
+    font-weight: 800;
   }
 }
 </style>

@@ -57,7 +57,7 @@ const remove = (): void => {
   background-color: #eee;
   border-radius: 12px;
   padding: 5px 10px;
-  width: 160px;
+  width: 150px;
   display: flex;
 }
 

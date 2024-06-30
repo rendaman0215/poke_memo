@@ -393,7 +393,7 @@ const PokeTypeMap: PokeTypeMapType = {
   },
   80: {
     0: [10, 13],
-    2: [3, 13],
+    1: [3, 13],
   },
   81: {
     0: [12, 8],
@@ -2676,6 +2676,7 @@ const PokeTypeMap: PokeTypeMapType = {
     17: [17],
   },
   774: {
+    0: [5, 2],
     7: [5, 2],
     8: [5, 2],
     9: [5, 2],

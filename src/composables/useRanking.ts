@@ -20,7 +20,6 @@ export const useRanking = () => {
     ).catch((error) => {
       console.error("Error fetching ranking data", error);
     });
-    console.log(apiResponse);
   };
 
   return {

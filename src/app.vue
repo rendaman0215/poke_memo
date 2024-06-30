@@ -7,13 +7,19 @@
         <div class="selected__poke">
           <PokemonCard
             class="selected__poke__card"
-            v-for="poke in selectedPoke"
+            v-for="(poke, index) in selectedPoke"
+            :key="poke.id"
             :pokemon="poke"
+            @removeFromParty="removeFromSelected(poke)"
           />
         </div>
       </section>
       <section class="party">
-        <h2>相手のパーティ</h2>
+        <h2>
+          相手のパーティ<span class="party__clear" @click="clear()"
+            >リセット</span
+          >
+        </h2>
         <div class="party__poke">
           <PokeButton
             v-for="poke in partyPokes"
@@ -32,9 +38,19 @@
           class="searchbox"
           @searchWord="(newVal:string) => (keyword = newVal)"
         />
+        <div v-if="keyword == ''" class="ranking__list">
+          <PokeButton
+            v-for="poke in baseRankedPokes"
+            :key="poke.rank"
+            :ranked="true"
+            class="ranking__list__poke"
+            :poke="poke"
+            @selected="selectPokeFromRank(poke)"
+          />
+        </div>
         <div class="ranking__list">
           <PokeButton
-            v-for="poke in rankedPokes"
+            v-for="poke in grepedPokes"
             :key="poke.rank"
             :ranked="true"
             class="ranking__list__poke"
@@ -51,21 +67,48 @@
 import { pokeRank } from "@/data/data";
 
 const baseRankedPokes = ref<Pokemon[]>([]);
+const allPokes = ref<Pokemon[]>([]);
 const partyPokes = ref<Pokemon[]>([]);
 const selectedPoke = ref<Pokemon[]>([]);
 const keyword = ref<string>("");
 
 onMounted(() => {
   for (const poke of pokeRank) {
-    baseRankedPokes.value.push(NewPokemon(poke.id, poke.form));
+    baseRankedPokes.value.push(NewPokemon(poke.id, poke.form, true));
+  }
+
+  const keys = Object.keys(PokemonListWithFrom);
+  for (const key of keys) {
+    const idAndForm = key.split("_");
+    let idString = idAndForm[0];
+    let id = 0;
+    let form = parseInt(key.split("_")[1]);
+    if (
+      idString.charAt(0) === "A" ||
+      idString.charAt(0) === "B" ||
+      idString.charAt(0) === "D"
+    ) {
+      id = parseInt(idString.slice(1));
+    } else if (idString.charAt(0) === "X") {
+      continue;
+    } else {
+      id = DEX_NO_LIST[key];
+    }
+
+    const sameBaseOtherForm = [
+      25, 664, 665, 666, 667, 668, 669, 670, 671, 585, 586, 422, 423, 774, 869,
+      999,
+    ];
+    if (sameBaseOtherForm.includes(id)) {
+      form = 0;
+    }
+    allPokes.value.push(NewPokemon(id, form));
   }
 });
 
-const rankedPokes = computed(() => {
+const grepedPokes = computed(() => {
   keyword.value = hiraganaToKatakana(keyword.value);
-  return baseRankedPokes.value.filter((poke) =>
-    poke.name.includes(keyword.value)
-  );
+  return allPokes.value.filter((poke) => poke.name.includes(keyword.value));
 });
 
 const selectPokeFromRank = (poke: Pokemon) => {
@@ -90,11 +133,18 @@ const selectPokeFromParty = (poke: Pokemon) => {
 
 const removeFromParty = (poke: Pokemon) => {
   partyPokes.value = partyPokes.value.filter((p) => p !== poke);
-  selectedPoke.value = selectedPoke.value.filter((p) => p !== poke);
+  selectedPoke.value = selectedPoke.value.filter((p) => p.id !== poke.id);
 };
 
 const removeFromSelected = (poke: Pokemon) => {
-  selectedPoke.value = selectedPoke.value.filter((p) => p !== poke);
+  selectedPoke.value = selectedPoke.value.filter((p) => {
+    return p.id !== poke.id;
+  });
+};
+
+const clear = () => {
+  partyPokes.value = [];
+  selectedPoke.value = [];
 };
 </script>
 
@@ -133,7 +183,7 @@ h2 {
   display: block;
   &__poke {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin: 1rem 0;
     &__card {
       margin: 0 1rem;
@@ -142,24 +192,43 @@ h2 {
 }
 
 .party {
+  margin-top: 1rem;
   display: block;
+  width: 100%;
   &__poke {
-    display: flex;
-    flex-wrap: wrap;
+    height: auto;
+    justify-content: center;
+    padding: 1rem auto;
+    display: grid;
+    grid-template-rows: 50px 50px;
+    grid-template-columns: 180px 180px 180px;
+    grid-gap: 5%;
+    @media (max-width: 768px) {
+      grid-template-columns: 180px 180px;
+    }
     &__button {
       flex: 3 2 33%;
       margin: 1rem 0;
     }
   }
+  &__clear {
+    font-size: 12px;
+    cursor: pointer;
+    color: red;
+    margin-left: 1rem;
+    font-family: "Arial";
+  }
 }
 
 .ranking {
+  margin-top: 1rem;
   flex: 1 1 100%;
   align-items: center;
-
   &__list {
     display: flex;
     flex-wrap: wrap;
+
+    justify-content: center;
     &__poke {
       display: flex;
       align-items: center;

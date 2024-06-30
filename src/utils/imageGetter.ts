@@ -159,6 +159,5 @@ export const GetTerastalIconName = (teraTypeId: any) => {
     default:
       break;
   }
-  console.log(t);
   return (t += ".png"), t;
 };
