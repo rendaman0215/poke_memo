@@ -4,37 +4,40 @@
     <div class="main">
       <section class="selected">
         <h2>相手の選出</h2>
-        <PokeButton
-          v-for="poke in selectedPoke"
-          :key="poke.id"
-          class="selected__poke"
-          :poke="poke"
-          :deletable="true"
-          @selected="removeFromSelected(poke)"
-          @remove="removeFromSelected(poke)"
-        />
+        <div class="selected__poke">
+          <PokemonCard
+            class="selected__poke__card"
+            v-for="poke in selectedPoke"
+            :pokemon="poke"
+          />
+        </div>
       </section>
       <section class="party">
         <h2>相手のパーティ</h2>
-        <PokeButton
-          v-for="poke in partyPokes"
-          class="party__poke"
-          :key="poke.id"
-          :poke="poke"
-          :deletable="true"
-          @selected="selectPokeFromParty(poke)"
-          @remove="removeFromParty(poke)"
-        />
+        <div class="party__poke">
+          <PokeButton
+            v-for="poke in partyPokes"
+            class="party__poke__button"
+            :key="poke.id"
+            :poke="poke"
+            :deletable="true"
+            @selected="selectPokeFromParty(poke)"
+            @remove="removeFromParty(poke)"
+          />
+        </div>
       </section>
       <section class="ranking">
         <h2>使用率ランキング</h2>
-        <SearchBox class="searchbox" />
+        <SearchBox
+          class="searchbox"
+          @searchWord="(newVal:string) => (keyword = newVal)"
+        />
         <div class="ranking__list">
           <PokeButton
-            v-for="(poke, index) in rankedPokes"
-            :key="index"
+            v-for="poke in rankedPokes"
+            :key="poke.rank"
+            :ranked="true"
             class="ranking__list__poke"
-            :index="index + 1"
             :poke="poke"
             @selected="selectPokeFromRank(poke)"
           />
@@ -45,13 +48,25 @@
 </template>
 
 <script setup lang="ts">
-import { NewPokemon } from "@/models/Pokemon";
-import type { Pokemon } from "@/models/Pokemon";
-import { pokeRank, pDetail } from "@/data/data";
+import { pokeRank } from "@/data/data";
 
-const rankedPokes = ref<Pokemon[]>([]);
+const baseRankedPokes = ref<Pokemon[]>([]);
 const partyPokes = ref<Pokemon[]>([]);
 const selectedPoke = ref<Pokemon[]>([]);
+const keyword = ref<string>("");
+
+onMounted(() => {
+  for (const poke of pokeRank) {
+    baseRankedPokes.value.push(NewPokemon(poke.id, poke.form));
+  }
+});
+
+const rankedPokes = computed(() => {
+  keyword.value = hiraganaToKatakana(keyword.value);
+  return baseRankedPokes.value.filter((poke) =>
+    poke.name.includes(keyword.value)
+  );
+});
 
 const selectPokeFromRank = (poke: Pokemon) => {
   if (partyPokes.value.length >= 6) {
@@ -81,10 +96,6 @@ const removeFromParty = (poke: Pokemon) => {
 const removeFromSelected = (poke: Pokemon) => {
   selectedPoke.value = selectedPoke.value.filter((p) => p !== poke);
 };
-
-for (const poke of pokeRank) {
-  rankedPokes.value.push(NewPokemon(poke.id, poke.form));
-}
 </script>
 
 <style scoped lang="scss">
@@ -112,25 +123,33 @@ h2 {
 .main {
   display: flex;
   justify-content: space-between;
-  margin: 1rem;
+  margin: 1rem 0.5rem;
   flex-wrap: wrap;
 }
 
 .selected {
-  flex: 1 1 75%;
-  height: 400px;
+  flex: 1 1 100%;
+  height: 500px;
   display: block;
   &__poke {
-    margin: 0 1rem 70px 1rem;
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+    &__card {
+      margin: 0 1rem;
+    }
   }
 }
 
 .party {
-  flex: 1 1 25%;
-  height: 400px;
   display: block;
   &__poke {
-    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    &__button {
+      flex: 3 2 33%;
+      margin: 1rem 0;
+    }
   }
 }
 
@@ -142,6 +161,8 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     &__poke {
+      display: flex;
+      align-items: center;
       margin: 0.5rem;
       box-sizing: content-box;
     }

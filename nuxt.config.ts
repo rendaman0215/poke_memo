@@ -41,6 +41,7 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       "Noto Sans JP": [100, 400, 500, 700, 900],
+      "M PLUS 1": [100, 200, 300, 400, 500, 600, 700, 800, 900],
     },
   },
   imports: {

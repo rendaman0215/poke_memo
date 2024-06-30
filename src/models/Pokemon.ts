@@ -1,10 +1,4 @@
-import type { PokeTypes } from "./PokeType";
-import type { WazaList } from "./Waza";
-import type { Tokusei } from "./Tokusei";
-import type { Item } from "./Mochimono";
-import type { TeraType } from "./TeraType";
-import type { Seikaku } from "./Seikaku";
-import type { Base } from "./Base";
+import { pokeRank } from "~/data/data";
 
 import { getPokeTypes } from "./PokeType";
 
@@ -1045,20 +1039,21 @@ export interface Pokemon {
   name: PokeName;
   types: PokeTypes;
   base: Base;
+  rank?: number;
 }
 
 // Personインターフェースを拡張
 export interface CustomizedPokemon extends Pokemon {
   // テラスタル
-  teraType: TeraType | undefined;
+  teraType?: TeraType;
   // 技構成
-  waza: WazaList | undefined;
+  waza?: WazaList;
   // 特性
-  tokusei: Tokusei | undefined;
+  tokusei?: Tokusei;
   // 持ち物
-  item: Item | undefined;
+  item?: Item;
   // 性格
-  seikaku: Seikaku | undefined;
+  seikaku?: Seikaku;
 }
 
 export const NewPokemon = (id: number, form: number): Pokemon => {
@@ -1073,12 +1068,18 @@ export const NewPokemon = (id: number, form: number): Pokemon => {
     Speed: 45,
   };
 
+  const rank =
+    pokeRank.findIndex((poke) => poke.id === id && poke.form === form) + 1
+      ? pokeRank.findIndex((poke) => poke.id === id && poke.form === form) + 1
+      : undefined;
+
   const pokemon: Pokemon = {
     id,
     form,
     name,
     types,
     base,
+    rank,
   };
   return pokemon;
 };

@@ -1,4 +1,4 @@
-const TokuseiDict = {
+export const TokuseiDict = {
   1: "あくしゅう",
   2: "あめふらし",
   3: "かそく",

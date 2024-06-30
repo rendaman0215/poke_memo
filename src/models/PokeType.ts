@@ -1,32 +1,115 @@
 // ポケモンのタイプ一覧
-export const PokeTypeList = [
-  "ノーマル",
-  "かくとう",
-  "ひこう",
-  "どく",
-  "じめん",
-  "いわ",
-  "むし",
-  "ゴースト",
-  "はがね",
-  "ほのお",
-  "みず",
-  "くさ",
-  "でんき",
-  "エスパー",
-  "こおり",
-  "ドラゴン",
-  "あく",
-  "フェアリー",
-] as const;
+export const PokeTypeDict: {
+  [key: number]: { name: string; color: string; position: string };
+} = {
+  0: {
+    name: "ノーマル",
+    color: "#999999",
+    position: "-590px -224px",
+  },
+  1: {
+    name: "かくとう",
+    color: "#ce406a",
+    position: "-532px -339px",
+  },
+  2: {
+    name: "ひこう",
+    color: "#8fa8dd",
+    position: "-532px -451px",
+  },
+  3: {
+    name: "どく",
+    color: "#ab6ac8",
+    position: "590px -280px",
+  },
+  4: {
+    name: "じめん",
+    color: "#d97745",
+    position: "-590px -112px",
+  },
+  5: {
+    name: "いわ",
+    color: "#c7b78b",
+    position: "-590px -392px",
+  },
+  6: {
+    name: "むし",
+    color: "#90c12d",
+    position: "-532px -59px",
+  },
+  7: {
+    name: "ゴースト",
+    color: "#6e4570",
+    position: "-590px 0",
+  },
+  8: {
+    name: "はがね",
+    color: "#598ea1",
+    position: "-590px -448px",
+  },
+  9: {
+    name: "ほのお",
+    color: "#ff9c54",
+    position: "-532px -395px",
+  },
+  10: {
+    name: "みず",
+    color: "#4e90d6",
+    position: "-590px -504px",
+  },
+  11: {
+    name: "くさ",
+    color: "#63bb5b",
+    position: "-590px -56px",
+  },
+  12: {
+    name: "でんき",
+    color: "#f4d23c",
+    position: "-532px -227px",
+  },
+  13: {
+    name: "エスパー",
+    color: "#f97177",
+    position: "-590px -336px",
+  },
+  14: {
+    name: "こおり",
+    color: "#73cec0",
+    position: "-590px -168px",
+  },
+  15: {
+    name: "ドラゴン",
+    color: "#0a6dc4",
+    position: "-532px -171px",
+  },
+  16: {
+    name: "あく",
+    color: "#5a5366",
+    position: "-532px -115px",
+  },
+  17: {
+    name: "フェアリー",
+    color: "#ed8fe6",
+    position: "-532px -283px",
+  },
+} as const;
 
-export type PokeType = (typeof PokeTypeList)[number];
+export type PokeType = {
+  id: keyof typeof PokeTypeDict;
+  info: (typeof PokeTypeDict)[number];
+};
 export type PokeTypes = [PokeType] | [PokeType, PokeType];
 
 export const getPokeTypes = (id: number, form: number): PokeTypes => {
   if (PokeTypeMap[id] && PokeTypeMap[id][form]) {
     const typeIds = PokeTypeMap[id][form];
-    const pokeTypes = typeIds.map((typeId: number) => PokeTypeList[typeId]);
+    // typeIdsからPokeTypeの配列を作成
+    const pokeTypes = typeIds.map((typeId) => {
+      return {
+        id: typeId,
+        info: PokeTypeDict[typeId],
+      } as PokeType;
+    });
     return pokeTypes as PokeTypes;
   }
   throw new Error(`Invalid id: ${id}, form: ${form}`);
@@ -38,6 +121,7 @@ type PokeTypeMapType = {
   };
 };
 
+// 各ポケモンのタイプ
 const PokeTypeMap: PokeTypeMapType = {
   1: {
     0: [11, 3],

@@ -2,12 +2,13 @@
   <div class="container">
     <span class="cross" v-if="deletable" @click="remove()">x</span>
     <div @click="select()" class="box">
-      <span v-if="index">{{ index }}</span>
+      <span v-if="ranked" class="rank">{{ poke.rank }}</span>
       <img
         class="icon"
         :src="GetPokeiIconName(poke.id, poke.form)"
         alt="poke"
-      />{{ poke.name }}
+      />
+      <span class="name">{{ poke.name }}</span>
     </div>
   </div>
 </template>
@@ -20,9 +21,10 @@ const props = defineProps({
     type: Object as PropType<Pokemon>,
     required: true,
   },
-  index: {
-    type: Number,
+  ranked: {
+    type: Boolean,
     required: false,
+    default: false,
   },
   deletable: {
     type: Boolean,
@@ -55,6 +57,7 @@ const remove = (): void => {
   border-radius: 12px;
   padding: 5px 10px;
   width: 160px;
+  display: flex;
 }
 
 .icon {
@@ -68,6 +71,10 @@ const remove = (): void => {
   font-weight: 700;
   cursor: pointer;
   color: grey;
-  margin-right: 3px;
+  margin-right: 5px;
+}
+
+.rank {
+  margin-right: 8px;
 }
 </style>

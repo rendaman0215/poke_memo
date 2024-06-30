@@ -17230,7 +17230,7 @@ export const pDetail = [
   },
 ];
 
-export const pokeRank = [
+export const pokeRank: Array<{ id: number; form: number }> = [
   { id: 987, form: 0 },
   { id: 1002, form: 0 },
   { id: 149, form: 0 },
@@ -17381,4 +17381,4 @@ export const pokeRank = [
   { id: 658, form: 0 },
   { id: 1010, form: 0 },
   { id: 373, form: 0 },
-];
+] as const;

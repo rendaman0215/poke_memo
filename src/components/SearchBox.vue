@@ -1,11 +1,25 @@
 <template>
-  <form action="#" class="search-form-4">
-    <button aria-label="検索"></button>
+  <form class="search-form-4">
+    <button type="button" aria-label="検索"></button>
     <label>
-      <input type="text" placeholder="ポケモンを検索" />
+      <input
+        type="text"
+        placeholder="ポケモンを検索"
+        @input="changed"
+        v-model="keyword"
+      />
     </label>
   </form>
 </template>
+
+<script setup lang="ts">
+const keyword = ref<string>("");
+
+const emit = defineEmits();
+const changed = (): void => {
+  emit("searchWord", keyword.value);
+};
+</script>
 
 <style scoped scss>
 .search-form-4 {
@@ -13,8 +27,11 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  border: 1px solid #777777;
+  border: 2px solid #777777;
   border-radius: 25px;
+  &:focus-within {
+    border-color: #3b54f5;
+  }
 }
 
 .search-form-4 input {
@@ -38,7 +55,7 @@
   height: 45px;
   border: none;
   background-color: transparent;
-  cursor: pointer;
+  cursor: auto;
 }
 
 .search-form-4 button::before {

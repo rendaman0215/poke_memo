@@ -925,4 +925,8 @@ export type Waza = {
   name: (typeof WazaDict)[keyof typeof WazaDict];
 };
 
-export type WazaList = [Waza, Waza, Waza, Waza];
+export type WazaList =
+  | [Waza]
+  | [Waza, Waza]
+  | [Waza, Waza, Waza]
+  | [Waza, Waza, Waza, Waza];
