@@ -23,6 +23,7 @@ const changed = (): void => {
 
 <style scoped scss>
 .search-form-4 {
+  background-color: white;
   width: 250px;
   display: flex;
   align-items: center;

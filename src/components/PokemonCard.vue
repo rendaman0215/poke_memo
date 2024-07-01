@@ -88,18 +88,10 @@
       </p>
     </div>
     <div class="card__wazalist">
-      <div class="card__wazalist__waza">
-        a
-      </div>
-      <div class="card__wazalist__waza">
-        a
-      </div>
-      <div class="card__wazalist__waza">
-        a
-      </div>
-      <div class="card__wazalist__waza">
-        a
-      </div>
+      <input class="card__wazalist__waza"/>
+      <input class="card__wazalist__waza"/>
+      <input class="card__wazalist__waza"/>
+      <input class="card__wazalist__waza"/>
     </div>
     <div class="card__trash" @click="removeFromParty">
       <p>選出から外す</p>
@@ -181,6 +173,8 @@ const lightenColor = (color: string, factor: number) => {
 
 <style lang="scss" scoped>
 .card {
+  background-color: white;
+  border: 0.5px solid #333;
   border-radius: 16px;
   padding: 10px;
   width: 300px;
@@ -298,6 +292,12 @@ const lightenColor = (color: string, factor: number) => {
       display: flex;
       justify-content: center;
       align-items: center;
+      font-size: 12px;
+      padding: 0 1px;
+      text-align: center;
+      &:focus-within {
+        border-color: #3b54f5;
+      }
     }
   }
 

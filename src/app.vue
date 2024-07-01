@@ -48,6 +48,7 @@
             @selected="selectPokeFromRank(poke)"
           />
         </div>
+        <h2>全使用可能ポケモン</h2>
         <div class="ranking__list">
           <PokeButton
             v-for="poke in grepedPokes"
@@ -151,11 +152,15 @@ const clear = () => {
 <style scoped lang="scss">
 h1 {
   font-size: 28px;
+  height: 50px;
   font-weight: 600;
   color: white;
-  background-color: #f53b4c;
-  padding: 1rem 0;
+  background-color: #008bb2;
+  border: 0.5px solid black;
+  border-bottom-right-radius: 50px;
+  border-bottom-left-radius: 50px;
   text-align: center;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 h2 {
@@ -225,10 +230,9 @@ h2 {
   flex: 1 1 100%;
   align-items: center;
   &__list {
-    display: flex;
+    display: grid;
+    grid-template-columns: 190px 190px 190px 190px 190px;
     flex-wrap: wrap;
-
-    justify-content: center;
     &__poke {
       display: flex;
       align-items: center;
